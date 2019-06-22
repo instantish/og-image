@@ -25,7 +25,7 @@ function getCss(theme: string, fontSize: string, backgroundColor: string) {
     foreground = "white";
   }
   if (backgroundColor) {
-    background = sanitizeHtml(backgroundColor);
+    background = "#" + sanitizeHtml(backgroundColor);
   }
   return `
     @font-face {
