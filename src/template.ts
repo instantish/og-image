@@ -18,12 +18,11 @@ const mono = readFileSync(`${__dirname}/../.fonts/Vera-Mono.woff2`).toString(
 function getCss(theme: string, fontSize: string, backgroundColor: string) {
   let background = "white";
   let foreground = "black";
-  let radial = "lightgray";
+  // TODO: Remove radial
 
   if (theme === "dark") {
     background = "black";
     foreground = "white";
-    radial = "dimgray";
   }
   if (backgroundColor) {
     background = sanitizeHtml(backgroundColor);
@@ -52,7 +51,6 @@ function getCss(theme: string, fontSize: string, backgroundColor: string) {
 
     body {
         background: ${background};
-        background-image: radial-gradient(${radial} 5%, transparent 0);
         background-size: 60px 60px;
         height: 100vh;
         display: flex;
