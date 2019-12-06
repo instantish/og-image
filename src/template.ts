@@ -1,31 +1,26 @@
-import { readFileSync } from "fs";
-import marked from "marked";
-import { sanitizeHtml } from "./sanitizer";
-const twemoji = require("twemoji");
-const twOptions = { folder: "svg", ext: ".svg" };
+import { readFileSync } from 'fs';
+import marked from 'marked';
+import { sanitizeHtml } from './sanitizer';
+const twemoji = require('twemoji');
+const twOptions = { folder: 'svg', ext: '.svg' };
 const emojify = (text: string) => twemoji.parse(text, twOptions);
 
 const regular = readFileSync(
   `${__dirname}/../.fonts/Inter-Regular.woff2`
-).toString("base64");
+).toString('base64');
 const bold = readFileSync(`${__dirname}/../.fonts/Inter-Bold.woff2`).toString(
-  "base64"
+  'base64'
 );
 const mono = readFileSync(`${__dirname}/../.fonts/Vera-Mono.woff2`).toString(
-  "base64"
+  'base64'
 );
 
-function getCss(theme: string, fontSize: string, backgroundColor: string) {
-  let background = "white";
-  let foreground = "black";
+function getCss(theme: string, fontSize: string) {
+  let foreground = 'black';
   // TODO: Remove radial
 
-  if (theme === "dark") {
-    background = "black";
-    foreground = "white";
-  }
-  if (backgroundColor) {
-    background = "#" + sanitizeHtml(backgroundColor);
+  if (theme === 'dark') {
+    foreground = 'white';
   }
   return `
     @font-face {
@@ -50,14 +45,14 @@ function getCss(theme: string, fontSize: string, backgroundColor: string) {
       }
 
     body {
-        background: ${background};
+        background: transparent;
         background-size: 60px 60px;
         height: 100vh;
         display: flex;
         text-align: center;
         align-items: center;
         justify-content: center;
-    }
+      }
 
     code {
         color: #D400FF;
@@ -98,7 +93,7 @@ function getCss(theme: string, fontSize: string, backgroundColor: string) {
         margin: 0 .05em 0 .1em;
         vertical-align: -0.1em;
     }
-    
+
     .heading {
         font-family: 'Inter', sans-serif;
         font-size: ${sanitizeHtml(fontSize)};
@@ -110,16 +105,19 @@ function getCss(theme: string, fontSize: string, backgroundColor: string) {
 
 export function getHtml(parsedReq: ParsedRequest) {
   const { text, theme, md, fontSize, backgroundColor } = parsedReq;
+
+  // TODO: Move to css.
+  const background = '#' + sanitizeHtml(backgroundColor);
   return `<!DOCTYPE html>
 <html>
     <meta charset="utf-8">
     <title>Generated Image</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
-        ${getCss(theme, fontSize, backgroundColor)}
+        ${getCss(theme, fontSize)}
     </style>
     <body>
-        <div>
+        <div style="background-color: ${background}; border-radius: 120px; width: 500px; height: 500px;">
             <div class="spacer">
             <div class="spacer">
             <div class="heading">${emojify(
