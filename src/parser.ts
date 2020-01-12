@@ -1,9 +1,9 @@
-import { IncomingMessage } from "http";
-import { parse } from "url";
+import { IncomingMessage } from 'http';
+import { parse } from 'url';
 
 export function parseRequest(req: IncomingMessage) {
-  console.log("HTTP " + req.url);
-  const { pathname = "/", query = {} } = parse(req.url || "", true);
+  console.log('HTTP ' + req.url);
+  const { pathname = '/', query = {} } = parse(req.url || '', true);
   const {
     fontSize,
     images,
@@ -11,7 +11,7 @@ export function parseRequest(req: IncomingMessage) {
     heights,
     theme,
     md,
-    backgroundColor
+    backgroundColor,
   } = query;
 
   // throw new Error("hi", {
@@ -25,37 +25,37 @@ export function parseRequest(req: IncomingMessage) {
   // });
 
   if (Array.isArray(fontSize)) {
-    throw new Error("Expected a single fontSize");
+    throw new Error('Expected a single fontSize');
   }
   if (Array.isArray(theme)) {
-    throw new Error("Expected a single theme");
+    throw new Error('Expected a single theme');
   }
   if (Array.isArray(backgroundColor)) {
-    throw new Error("Expected a single backgroundColor");
+    throw new Error('Expected a single backgroundColor');
   }
 
-  const arr = pathname.slice(1).split(".");
-  let extension = "";
-  let text = "";
+  const arr = (pathname || '/').slice(1).split('.');
+  let extension = '';
+  let text = '';
   if (arr.length === 0) {
-    text = "";
+    text = '';
   } else if (arr.length === 1) {
     text = arr[0];
   } else {
     extension = arr.pop() as string;
-    text = arr.join(".");
+    text = arr.join('.');
   }
 
   const parsedRequest: ParsedRequest = {
-    fileType: extension === "jpeg" ? extension : "png",
+    fileType: extension === 'jpeg' ? extension : 'png',
     text: decodeURIComponent(text),
-    theme: theme === "dark" ? "dark" : "light",
-    md: md === "1" || md === "true",
-    fontSize: fontSize || "96px",
+    theme: theme === 'dark' ? 'dark' : 'light',
+    md: md === '1' || md === 'true',
+    fontSize: fontSize || '96px',
     images: getArray(images),
     widths: getArray(widths),
     heights: getArray(heights),
-    backgroundColor: backgroundColor || "blue"
+    backgroundColor: backgroundColor || 'blue',
   };
   parsedRequest.images = getDefaultImages(
     parsedRequest.images,
@@ -73,12 +73,12 @@ function getDefaultImages(images: string[], theme: Theme): string[] {
     images.length > 0 &&
     images[0] &&
     images[0].startsWith(
-      "https://assets.zeit.co/image/upload/front/assets/design/"
+      'https://assets.zeit.co/image/upload/front/assets/design/'
     )
   ) {
     return images;
   }
-  return theme === "light"
-    ? ["https://assets.zeit.co/image/upload/front/assets/design/now-black.svg"]
-    : ["https://assets.zeit.co/image/upload/front/assets/design/now-white.svg"];
+  return theme === 'light'
+    ? ['https://assets.zeit.co/image/upload/front/assets/design/now-black.svg']
+    : ['https://assets.zeit.co/image/upload/front/assets/design/now-white.svg'];
 }
