@@ -4,7 +4,6 @@
   "description": "Generate an open graph image for twitter/facebook/etc",
   "main": "dist/card.js",
   "scripts": {
-    "dev": "now dev",
     "build": "tsc",
     "now-build": "tsc",
     "watch": "tsc --watch"
@@ -23,6 +22,6 @@
     "typescript": "3.3.3333"
   },
   "engines": {
-    "node": "12.x"
+    "node": "10.x"
   }
 }
